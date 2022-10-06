@@ -15,6 +15,8 @@ body {
   background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/5437478f-d92d-4e57-a2d9-154db05b16c5/dci8bny-269ab3ae-4786-44ea-b14b-627f40eaa3bf.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzU0Mzc0NzhmLWQ5MmQtNGU1Ny1hMmQ5LTE1NGRiMDViMTZjNVwvZGNpOGJueS0yNjlhYjNhZS00Nzg2LTQ0ZWEtYjE0Yi02MjdmNDBlYWEzYmYuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.MfyC_wfEHsA2UmSFD5FIhv9Y7roufDeZhD12nsJCAXU");
   background-size: cover;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
 }
 
 body>div {
@@ -40,6 +42,25 @@ body>div {
   bottom: 0;
   background: #111;
   width: 100%;
+}
+
+@keyframes comeIn {
+  0% { transform: scale(0) }
+  75% { transform: scale(1.03) }
+  100% { transform: scale(1) }
+}
+
+/* .xmasonry .xblock {
+  animation: comeIn ease 0.5s;
+  animation-iteration-count: 1;
+  transition: left .3s ease, top .3s ease;
+} */
+
+.card {
+  margin: 7px;
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px darkgray;
 }
 
 a {
