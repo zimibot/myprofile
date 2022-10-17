@@ -37,7 +37,8 @@ body>div {
   cursor: pointer;
 }
 
-.swiper-horizontal>.swiper-scrollbar, .swiper-scrollbar.swiper-scrollbar-horizontal {
+.swiper-horizontal>.swiper-scrollbar,
+.swiper-scrollbar.swiper-scrollbar-horizontal {
   left: 0;
   bottom: 0;
   background: #111;
@@ -45,16 +46,27 @@ body>div {
 }
 
 @keyframes comeIn {
-  0% { transform: scale(0) }
-  75% { transform: scale(1.03) }
-  100% { transform: scale(1) }
+  0% {
+    transform: translate(0, 100%) scale(0);
+    opacity: 0
+  }
+  50% {
+    transform: translate(0, 40%) scale(0.5);
+    opacity: 0.5
+  }
+
+  /* 75% { transform: scale(0.7);  opacity: 0.5  } */
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1
+  }
 }
 
-/* .xmasonry .xblock {
+.scale-in {
   animation: comeIn ease 0.5s;
   animation-iteration-count: 1;
   transition: left .3s ease, top .3s ease;
-} */
+}
 
 .card {
   margin: 7px;
@@ -71,6 +83,46 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+
+.loading__anim {
+  width: 35px;
+  height: 35px;
+  border: 5px solid rgba(189, 189, 189, 0.25);
+  border-left-color: rgb(11, 229, 3);
+  border-top-color: rgb(11, 229, 3);
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotate 600ms infinite linear;
+}
+
+.example-enter {
+  opacity: 0.01;
+}
+
+#dropdownNavbar {
+  opacity: 1;
+  animation: comeIn ease 0.5s;
+  animation-iteration-count: 1;
+  transition: left .3s ease, top .3s ease;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 
 @media (prefers-color-scheme: dark) {
   html {
