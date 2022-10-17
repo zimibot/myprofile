@@ -44,7 +44,7 @@ export const AboutUs = () => {
                 <a href="#">
                   <h5 className="mb-2 text-xl font-bold tracking-tight text-[#444] dark:text-white">KEMAMPUAN</h5>
                 </a>
-                <div className="grid lg:grid-cols-5 md:grid-cols-2 gap-3">
+                <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-3">
                   <div className="flex justify-center flex-col items-center gap-3 bg-slate-100  rounded-xl shadow">
                     <div className="p-3 border-b ">Front End</div>
                     <div className="px-2 py-1">
