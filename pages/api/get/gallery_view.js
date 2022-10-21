@@ -28,7 +28,7 @@ export default async function getGallery(req, res) {
             where,
             include: [{
                 model: GalleryModel,
-                attributes: ["url"],
+                attributes: ["url","id"],
             }],
 
         })
@@ -44,6 +44,7 @@ export default async function getGallery(req, res) {
             return {
                 ...d.dataValues,
                 users_gallery: d.dataValues.users_gallery?.url,
+                id: d.dataValues.users_gallery?.id,
                 width: 1
             }
 

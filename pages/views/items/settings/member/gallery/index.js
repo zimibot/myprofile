@@ -9,7 +9,7 @@ import { gallery, verify } from "../../../../../../src/client_api/get";
 import { useState } from "react";
 
 const GalleryRoute = () => {
-    const { register, reset } = useForm()
+    const { register } = useForm()
 
     const token = getCookie("token")
     const nimUser = verify()
@@ -33,12 +33,15 @@ const GalleryRoute = () => {
                     }),
                     {
                         pending: "Upload Pending",
-                        error: "Upload Error",
+                        error: {
+                            render: ({ data }) => {
+                                return data.response.data.message
+                            }
+                        },
                         success: {
-                            render: () => {
+                            render: ({ data }) => {
                                 mutate()
-                                reset()
-                                return "Upload success"
+                                return <div>Upload <b className="text-cyan-500">{data.data.name}</b> success</div>
                             }
                         }
                     }
@@ -64,7 +67,7 @@ const GalleryRoute = () => {
         <div className="relative flex flex-col flex-1">
             {data ?
                 <>
-                    <Gallery name="user" animation={"scale-in"} itemGallery={data.results} totalPages={data.totalPages} page={pageNext} initialPage={page}></Gallery>
+                    <Gallery name="user" mutate={mutate} animation={"scale-in"} itemGallery={data.results} totalPages={data.totalPages} page={pageNext} initialPage={page}></Gallery>
                 </>
                 : <div className="w-full p-4 text-center">Loading</div>
             }

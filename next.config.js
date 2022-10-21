@@ -7,6 +7,9 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  serverRuntimeConfig: {
+    PROJECT_ROOT: __dirname
+  },
   async redirects() {
     return [
       {

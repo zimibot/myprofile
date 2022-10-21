@@ -1,6 +1,9 @@
+import axios from "axios"
+import { getCookie } from "cookies-next"
 import Link from "next/link"
 import { useState } from "react"
-import { dataUser } from "../../../../../../src/client_api/get"
+import { toast } from "react-toastify"
+import { dataUser, verify } from "../../../../../../src/client_api/get"
 import SettingsLayout from "../../../../../../src/components/layout/settings"
 import { Paggination } from "../../../../../../src/components/paggination"
 
@@ -13,9 +16,10 @@ const SettingsProfile = () => {
     const paggination = (count) => {
         setPage(count.selected)
     }
-    
-    const { data } = dataUser({ next: page, limit: 6, search: Search })
 
+    const token = getCookie("token")
+
+    const { data, mutate } = dataUser({ next: page, limit: 6, search: Search })
 
     let current_page = data?.data?.results.current_page
     let count = data?.data?.results.count
@@ -75,11 +79,11 @@ const SettingsProfile = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <Rows rows={data} search={Search}/>
+                    <Rows rows={data} search={Search} mutate={mutate} token={token} />
                 </tbody>
             </table>
         </div>
-            {count > 0 &&
+        {count > 0 &&
             <div className="flex justify-between">
                 <Paggination pageNext={paggination} pageCount={totalPages} />
                 <div className="flex gap-1">
@@ -88,18 +92,46 @@ const SettingsProfile = () => {
                     <div className="bg-white py-2 px-3 shadow"> Total {totalPages} Pages </div>
                 </div>
             </div>
-            }
+        }
     </SettingsLayout >
 }
 
-export const Rows = ({ rows, search = "" }) => {
+export const Rows = ({ rows, search = "", mutate, token }) => {
+
+    const currentUser = verify()
+    let nim = currentUser.data.data.nim
+    
+    const OnDelete = async (nim, email, url) => {
+
+        try {
+            await toast.promise(axios.delete(`/api/delete/user?nim=${nim}&email=${email}&url=${url}`, {
+                headers: {
+                    "Authorization": token
+                }
+            }), {
+                pending: "Delete Pending",
+                error: "Delete Error",
+                success: {
+                    render: () => {
+                        mutate()
+                        return "Deleted Success"
+                    }
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+
     if (!rows) return <tr className="w-full p-6 text-center" >
         <td colSpan={100}>
             <div className="p-4 flex justify-center w-full">Loading....</div>
         </td>
     </tr>;
     if (rows.data.results.count === 0) {
-      return  <tr className="w-full p-6 text-center" >
+        return <tr className="w-full p-6 text-center" >
             <td colSpan={100}>
                 <div className="p-4 flex justify-center w-full">Search <b>'{search}'</b> not found</div>
             </td>
@@ -141,7 +173,9 @@ export const Rows = ({ rows, search = "" }) => {
                 <td className="py-4 px-6">
                     <div className="flex gap-4">
                         <a href={`/views/items/settings/member/profile/${d.nim}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                        {nim !== d.nim &&
+                            <button onClick={() => OnDelete(d.nim, d.email, d.url)} className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                        }
                     </div>
                 </td>
             </tr>

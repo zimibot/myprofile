@@ -18,8 +18,8 @@ const saveFile = async (file, res) => {
     const data = fs.readFileSync(file.filepath);
     fs.writeFileSync(path, data);
     await fs.unlinkSync(file.filepath);
-
-    return currentFoto
+    let name = file.originalFilename
+    return { currentFoto, name }
 };
 
 const Gallery = async (req, res) => {
@@ -31,20 +31,18 @@ const Gallery = async (req, res) => {
 
                 let data_foto = files.foto
 
-                console.log(fields)
-
                 if (data_foto?.mimetype === "image/png" || data_foto?.mimetype === "image/jpeg") {
 
-                    let foto = await saveFile(data_foto, res);
+                    let { currentFoto, name } = await saveFile(data_foto, res);
 
                     let create = {
                         ...fields,
-                        url: foto
+                        url: currentFoto
                     }
 
                     GalleryModel.create(create)
 
-                    res.status(200).json({ message: 'Gallery Upload Success' });
+                    res.status(200).json({ message: 'Gallery Upload Success', name: name });
                 } else {
                     res.status(500).json({ message: "Upload file only jpg or png", path: "foto" })
                 }

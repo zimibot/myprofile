@@ -25,7 +25,7 @@ export const verify = () => {
 
 export const dataUser = ({ next = 0, limit = 1, search = "", attribute }) => {
     let token = getCookie('token')
-    const { data, error } = useSWR({
+    const { data, error, mutate } = useSWR({
         url: `/api/get/user?next=${next}&limit=${limit}&search=${search}&attribute=${attribute}`, headers: {
             headers: {
                 'Authorization': token,
@@ -37,7 +37,8 @@ export const dataUser = ({ next = 0, limit = 1, search = "", attribute }) => {
 
     return {
         data,
-        error
+        error,
+        mutate
     }
 }
 
