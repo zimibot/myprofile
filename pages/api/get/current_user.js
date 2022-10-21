@@ -39,7 +39,6 @@ export default authenticated(async function getCurrentUser(req, res) {
         });
 
         
-        console.log(users[0]?.dataValues)
         let usr_setting = users[0]?.dataValues.user_setting.dataValues
         let roles = currentSettings[0]?.dataValues.id_roles
         // if (users.user_setting.user_active === 0)  res.status(401).json({ erros: "You have been banned" });
@@ -52,7 +51,6 @@ export default authenticated(async function getCurrentUser(req, res) {
         })
 
     } catch (error) {
-        console.log(error)
         res.status(500).json({ message: error.message })
 
     }

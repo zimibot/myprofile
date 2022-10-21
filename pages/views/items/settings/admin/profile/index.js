@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { useState } from "react"
 import { dataUser } from "../../../../../../src/client_api/get"
 import SettingsLayout from "../../../../../../src/components/layout/settings"
@@ -12,6 +13,7 @@ const SettingsProfile = () => {
     const paggination = (count) => {
         setPage(count.selected)
     }
+    
     const { data } = dataUser({ next: page, limit: 6, search: Search })
 
 
@@ -29,7 +31,12 @@ const SettingsProfile = () => {
                     <input type="text" onChange={d => setSearch(d.target.value)} id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Fullname" />
                 </div>
             </div>
-            <div className="bg-white py-2 px-3 shadow"> Total Count : {count} Data </div>
+            <div className="flex gap-3">
+                <Link href={"/views/items/settings/admin/profile/role_edit"}>
+                    <button className="bg-cyan-500 text-white py-2 px-3 shadow"> SETTINGS ROLES</button>
+                </Link>
+                <div className="bg-white py-2 px-3 shadow"> Total Count : {count} Data </div>
+            </div>
         </div>
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

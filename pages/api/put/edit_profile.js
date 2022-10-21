@@ -82,41 +82,13 @@ const EditProfile = async (req, res) => {
                     res.status(500).json({ message: "Upload file only jpg or png", path: "foto" })
                 }
 
-
             });
-
-            // let user = await Users.update(req.body, {
-            //     where: { nim: req.body.nim },
-            //     include: [
-            //         {
-            //             model: UsersSettings,
-            //             where: {
-            //                 nim: req.body.nim
-            //             }
-            //         }
-            //     ],
-            //     returning: true,
-            //     plain: true
-            // },)
-
-
-
-
-            // user = user[0].dataValues
-            // const match = await bcrypt.compare(req.body.password, user.password);
-
-            // if (!req.body.password) return res.status(500).send({ code: 500, message: "Password is required!" });
-            // if (!validateEmail(req.body.email)) res.status(500).send({ code: 500, message: "Email does not match" });
-            // if (!match) return res.status(500).json({ message: "Your Password is Wrong", path: "password" });
 
 
         } else {
             res.status(405).send({ code: 405, message: 'Only Method PUT requests allowed' })
         };
-
-
     } catch (error) {
-        console.log(error)
         res.status(500).json({ message: error });
     }
 }

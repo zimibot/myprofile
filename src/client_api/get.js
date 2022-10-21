@@ -23,10 +23,10 @@ export const verify = () => {
 
 }
 
-export const dataUser = ({ next = 0, limit = 1, search }) => {
+export const dataUser = ({ next = 0, limit = 1, search = "", attribute }) => {
     let token = getCookie('token')
     const { data, error } = useSWR({
-        url: `/api/get/user?next=${next}&limit=${limit}&search=${search}`, headers: {
+        url: `/api/get/user?next=${next}&limit=${limit}&search=${search}&attribute=${attribute}`, headers: {
             headers: {
                 'Authorization': token,
             }
@@ -60,4 +60,20 @@ export const currentUser = ({ nim }) => {
         data,
         error
     }
+}
+
+export const gallery = ({ nim, limit, page }) => {
+
+    let d = nim ? `nim=${nim}` : ""
+
+    const { data, error, mutate } = useSWR(`/api/get/gallery_view?limit=${limit}&page=${page}&${d}`, fetcher, {
+        loadingTimeout: 1000
+    });
+
+    return {
+        data,
+        error,
+        mutate
+    }
+
 }

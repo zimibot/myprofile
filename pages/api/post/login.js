@@ -13,7 +13,6 @@ const Login = async (req, res) => {
                 foreignKey: 'nim',
             });
 
-
             let user = await Users.findAll({
                 where: {
                     email: req.body.email
@@ -23,9 +22,6 @@ const Login = async (req, res) => {
                     attributes: ['id_roles', 'user_active']
                 }]
             });
-
-            console.log(user)
-
 
             user = user[0].dataValues
             const match = await bcrypt.compare(req.body.password, user.password);

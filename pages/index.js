@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { Navigation, Pagination, Scrollbar, A11y, Controller, Autoplay, EffectCards } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { verify } from '../src/client_api/get';
+import { gallery, verify } from '../src/client_api/get';
 import { AboutUs } from '../src/components/about';
 import { Gallery } from '../src/components/gallery';
 
@@ -95,8 +95,11 @@ export default function Home() {
   const [active, setactive] = useState(false);
   const [widthPosition, setwidthPosition] = useState(null);
   const verif = verify()
-
-  console.log(verif.data)
+  const [page, setpage] = useState(0);
+  const { data } = gallery({ nim: null, page: page, limit: 8 })
+  const pageNext = (d) => {
+    setpage(d.selected)
+  }
   const defaultPage = useRef(null)
   const content = useRef(null)
   return (
@@ -124,12 +127,12 @@ export default function Home() {
                   className="h-full"
                 >
                   <SwiperSlide>
-                 { /* eslint-disable */}
+                    { /* eslint-disable */}
                     <img className="object-cover h-full w-full" src="https://images.unsplash.com/photo-1614283233556-f35b0c801ef1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2lkZSUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"></img>
                   </SwiperSlide>
                   <SwiperSlide>
-                    
-                 { /* eslint-disable */}
+
+                    { /* eslint-disable */}
                     <img className="object-cover h-full w-full" src="https://www.morganstanley.com/content/dam/msdotcom/people/tiles/wided-sghaier.jpg.img.490.medium.jpg/1594912196352.jpg"></img>
 
                   </SwiperSlide>
@@ -200,7 +203,12 @@ export default function Home() {
                 }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
-                <Gallery />
+                {data ?
+                  <>
+                    <Gallery  animation={"scale-in"} itemGallery={data.results} totalPages={data.totalPages} page={pageNext} initialPage={page}></Gallery>
+                  </>
+                  : <div className="w-full p-4 text-center">Loading</div>
+                }
               </div> :
                 <div className="flex items-center justify-center flex-col w-full h-full absolute top-0 left-0 cursor-pointer" onClick={() => {
                   onFullScreen(defaultPage, setwidthPosition, setactive, active, content, "gallery")

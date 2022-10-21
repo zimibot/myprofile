@@ -64,7 +64,7 @@ const Login = () => {
 
     return (
         <div className="flex items-center justify-center w-full h-screen bg-black bg-opacity-60">
-            <section className="max-w-7xl  bg-opacity-70 backdrop-blur  rounded-lg">
+            <section className="max-w-7xl w-full  bg-opacity-70 backdrop-blur  rounded-lg">
                 <div className="container h-full">
                     <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
                         <div className="md:w-8/12 lg:w-6/12 mb-12 md:mb-0">

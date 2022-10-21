@@ -5,20 +5,19 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { isEmptyObject, validateEmail } from "../../../../../../lib/error";
-import { currentUser, verify } from "../../../../../../src/client_api/get";
-import { Input, Selected, Textarea } from "../../../../../../src/components/input"
+import { currentUser } from "../../../../../../src/client_api/get";
+import { Input, Textarea } from "../../../../../../src/components/input"
 import SettingsLayout from "../../../../../../src/components/layout/settings"
 
 const Profile = () => {
     const { register, handleSubmit, watch, setValue, resetField, formState: { errors } } = useForm();
     const router = useRouter()
+
     const query = router.query.index
     let token = getCookie('token')
-
     let btnValid = !isEmptyObject(errors)
     let { password, repassword } = watch()
     let isPassword = password?.length > 0 && repassword?.length > 0 ? password === repassword ? false : true : false
-    const verif = verify()
     const data = currentUser({ nim: query })
     const isData = data.data.data
     const fullname = isData.results.fullname
@@ -83,8 +82,10 @@ const Profile = () => {
         } catch (error) {
             return error
         }
-
     };
+
+    
+
     return <SettingsLayout title={"#EDIT PROFILE"} roles={roles}>
         <div className="w-full p-4">
             <div className="max-w-3xl bg-white m-auto">
@@ -110,32 +111,6 @@ const Profile = () => {
                             </div>
                         </div>
                         <div className="w-full p-5 flex flex-col gap-6">
-                            {verif.data.data.roles === 1 &&
-                                <div className="grid gap-4 grid-cols-2">
-                                    <div className="flex flex-wrap -mx-3">
-                                        <div className="w-full px-3">
-                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                                *User Active
-                                            </label>
-                                            <Selected placeholder="Select" register={register("user_active", { required: true })}>
-                                                <option value={1}>Active</option>
-                                                <option value={0}>Deactive</option>
-                                            </Selected>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap -mx-3">
-                                        <div className="w-full  px-3">
-                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                                *Roles User
-                                            </label>
-                                            <Selected placeholder="Select" register={register("id_roles", { required: true })}>
-                                                <option value={1}>Admin</option>
-                                                <option value={2}>Member</option>
-                                            </Selected>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
                             <div className="flex flex-wrap -mx-3">
                                 <div className="w-full px-3">
                                     <label className={`block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 `}>

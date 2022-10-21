@@ -38,7 +38,7 @@ export const Navbar = () => {
                                 <a href="/" className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">Home</a>
                             </li>
                             <li>
-                                <Link href="/" className="block py-2 pr-4 pl-3   bg-blue-700 rounded md:bg-transparent  md:p-0 dark:text-white">Gallery</Link>
+                                <Link href="/views/items/settings/member/gallery" className="block py-2 pr-4 pl-3   bg-blue-700 rounded md:bg-transparent  md:p-0 dark:text-white">Gallery</Link>
                             </li>
                         </ul>
                     </div>
@@ -53,11 +53,16 @@ export const Navbar = () => {
                             <div id="dropdownNavbar" className="top-[66px] absolute z-10 w-44 font-normal bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-400">
                                     <li>
-                                        <a href="#" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{name}</a>
+                                        <div href="#" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{name}</div>
+                                    </li>
+                                </ul>
+                                <ul className="py-1 text-sm text-gray-700 dark:text-gray-400">
+                                    <li>
+                                        <div href="#" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kemampuan</div>
                                     </li>
                                 </ul>
                                 <div className="py-1">
-                                    <a href="#" className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white" onClick={() => logout()}>Sign out</a>
+                                    <div  className="block cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white" onClick={() => logout()}>Sign out</div>
                                 </div>
                             </div>
                         }
