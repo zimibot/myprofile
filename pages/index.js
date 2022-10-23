@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
 import { Navigation, Pagination, Scrollbar, A11y, Controller, Autoplay, EffectCards } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { gallery, verify } from '../src/client_api/get';
+import { gallery, userInfo, verify } from '../src/client_api/get';
 import { AboutUs } from '../src/components/about';
 import { Gallery } from '../src/components/gallery';
 
@@ -96,12 +96,19 @@ export default function Home() {
   const [widthPosition, setwidthPosition] = useState(null);
   const verif = verify()
   const [page, setpage] = useState(0);
-  const { data } = gallery({ nim: null, page: page, limit: 8 })
+  const { data } = gallery({ nim: null, page: page, limit: 15 })
   const pageNext = (d) => {
     setpage(d.selected)
   }
+  const info = userInfo()
+
   const defaultPage = useRef(null)
   const content = useRef(null)
+
+  let attr = info.data
+
+ 
+
   return (
     <div className='flex-1 flex flex-col'>
       <div className="grid grid-cols-3 flex-1 gap-4 p-4 bg-black bg-opacity-30 backdrop-blur-sm">
@@ -109,7 +116,7 @@ export default function Home() {
         <div className="w-full h-full row-span-2">
           <div className="w-full h-full">
             <div className="w-full h-full overflow-hidden px-4">
-              {controlledSwiper &&
+              {controlledSwiper && attr &&
                 <Swiper
                   modules={[Navigation, Pagination, Scrollbar, A11y, Controller, Autoplay, EffectCards]}
                   effect={'cards'}
@@ -126,16 +133,14 @@ export default function Home() {
                   onSlideChange={() => console.log('slide change')}
                   className="h-full"
                 >
-                  <SwiperSlide>
-                    { /* eslint-disable */}
-                    <img className="object-cover h-full w-full" src="https://images.unsplash.com/photo-1614283233556-f35b0c801ef1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2lkZSUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"></img>
-                  </SwiperSlide>
-                  <SwiperSlide>
+                  {attr.attributes.map(d => {
+                    return <SwiperSlide key={d.id}>
+                      { /* eslint-disable */}
+                      <img className="object-cover h-full w-full" src={d.foto}></img>
+                    </SwiperSlide>
+                  })}
 
-                    { /* eslint-disable */}
-                    <img className="object-cover h-full w-full" src="https://www.morganstanley.com/content/dam/msdotcom/people/tiles/wided-sghaier.jpg.img.490.medium.jpg/1594912196352.jpg"></img>
 
-                  </SwiperSlide>
 
                 </Swiper>
               }
@@ -145,26 +150,29 @@ export default function Home() {
         <div className="grid grid-cols-2 w-full h-full col-span-2 row-span-2 gap-4 relative overflow-hidden" ref={content}>
           <div className=" flex items-center justify-center" ref={defaultPage}>
             <div className="w-full h-full">
-              <Swiper
-                modules={[Controller]}
-                allowTouchMove={false}
-                onSwiper={setControlledSwiper}
-                className="w-full h-full">
-                <SwiperSlide>
-                  <div className="flex items-center justify-center flex-col gap-2 w-full h-full bg-opacity-30 text-white bg-black backdrop-blur">
-                    <p className="text"> HI THERE ! I'M</p>
-                    <div className="text-[40px] font-bold">Harris Munahar</div>
-                    <p className="text-lg text-rose-600 font-semibold">SOFTWARE ENGINERING</p>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="flex items-center justify-center flex-col gap-2 w-full h-full bg-opacity-30 text-white bg-black backdrop-blur">
-                    <p className="text-lg"> HI THERE ! I'M</p>
-                    <div className="text-[40px] font-bold">Alya Roida</div>
-                    <p className="text-lg text-rose-600 font-semibold">MANAGEMENT</p>
-                  </div>
-                </SwiperSlide>
-              </Swiper>
+              {attr &&
+                <Swiper
+                  modules={[Controller]}
+                  allowTouchMove={false}
+                  onSwiper={setControlledSwiper}
+                  className="w-full h-full">
+                  {attr.attributes.map(d => {
+                    return (
+                      <SwiperSlide key={
+                        d.id
+                      }>
+                        <div className="flex items-center justify-center flex-col gap-2 w-full h-full bg-opacity-30 text-white bg-black backdrop-blur">
+                          <p className="text"> HI THERE ! I'M</p>
+                          <div className="text-[40px] font-bold">{d.fullname}</div>
+                          <p className="text-lg text-rose-600 font-semibold uppercase">{d.job ? d.job : "-"}</p>
+                        </div>
+                      </SwiperSlide>
+                    )
+                  })}
+
+
+                </Swiper>
+              }
             </div>
           </div>
           <div className='relative'>
@@ -179,7 +187,7 @@ export default function Home() {
                 }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
-                <AboutUs />
+                <AboutUs data={info.data} />
               </div> :
                 <div className="flex items-center justify-center flex-col w-full h-full absolute top-0 left-0 cursor-pointer" onClick={() => {
                   onFullScreen(defaultPage, setwidthPosition, setactive, active, content, "about")
@@ -191,25 +199,23 @@ export default function Home() {
               }
             </div>
           </div>
-          <div className={`transition-all relative py-8`} >
-            <div className={`bg-slate-200  w-full h-full dark:bg-slate-800  ring-1 ring-slate-900/5  hover:shadow-black  ${widthPosition?.gallery?.width ? "z-40 fixed mb-4 mr-4 bottom-0 " : "absolute  bottom-0"}`} style={{
+          <div className={`transition-all relative `} >
+            <div className={`flex flex-col flex-1 bg-slate-200  w-full h-full dark:bg-slate-800  ring-1 ring-slate-900/5  hover:shadow-black  ${widthPosition?.gallery?.width ? "z-40 fixed mb-4 mr-4 bottom-0 " : "absolute  bottom-0"}`} style={{
               width: `${!widthPosition ? `${defaultPage.current?.clientWidth}px` : widthPosition?.gallery?.width}`,
               height: `${!widthPosition ? `${defaultPage.current?.clientHeight}px` : widthPosition?.gallery?.height}`,
               transition: "0.3s ease-in-out"
             }}>
-              {widthPosition?.gallery?.width ? <div>
+              {widthPosition?.gallery?.width ? <>
                 <button className="absolute right-0 p-3 top-0 hover:bg-red-500 hover:text-white z-10" onClick={() => {
                   onFullScreen(defaultPage, setwidthPosition, setactive, active, content, "gallery")
                 }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
                 {data ?
-                  <>
-                    <Gallery  animation={"scale-in"} itemGallery={data.results} totalPages={data.totalPages} page={pageNext} initialPage={page}></Gallery>
-                  </>
+                  <Gallery total={data.total} animation={"scale-in"} itemGallery={data.results} totalPages={data.totalPages} page={pageNext} initialPage={page}></Gallery>
                   : <div className="w-full p-4 text-center">Loading</div>
                 }
-              </div> :
+              </> :
                 <div className="flex items-center justify-center flex-col w-full h-full absolute top-0 left-0 cursor-pointer" onClick={() => {
                   onFullScreen(defaultPage, setwidthPosition, setactive, active, content, "gallery")
                 }}>
@@ -220,7 +226,7 @@ export default function Home() {
               }
             </div>
           </div>
-          <div className={`transition-all relative  pt-20 pb-14`} >
+          <div className={`transition-all relative  pt-20 pb-8`} >
             <div className={`bg-slate-200  w-full h-full dark:bg-slate-800  ring-1 ring-slate-900/5  hover:shadow-black  ${widthPosition?.contact?.width ? "z-40 fixed mb-4 mr-4 bottom-0 right-0" : "absolute top-0 left-0"}`} style={{
               width: `${!widthPosition ? `${defaultPage.current?.clientWidth}px` : widthPosition?.contact?.width}`,
               height: `${!widthPosition ? `${defaultPage.current?.clientHeight}px` : widthPosition?.contact?.height}`,

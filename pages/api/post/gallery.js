@@ -13,8 +13,9 @@ export const config = {
 
 const saveFile = async (file, res) => {
     if (!file) return "/default.jpg";
-    let path = `./public/uploads/gallery/${file.originalFilename}`
-    let currentFoto = `/uploads/gallery/${file.originalFilename}`
+    let type = file.mimetype.split("/").pop()
+    let path = `./public/uploads/gallery/${file.newFilename}.${type}`
+    let currentFoto = `/uploads/gallery/${file.newFilename}.${type}`
     const data = fs.readFileSync(file.filepath);
     fs.writeFileSync(path, data);
     await fs.unlinkSync(file.filepath);

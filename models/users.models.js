@@ -20,6 +20,9 @@ const Users = db.define('users', {
     fullname: {
         type: DataTypes.STRING
     },
+    job: {
+        type: DataTypes.STRING
+    },
     email: {
         type: DataTypes.STRING
     },
@@ -30,6 +33,15 @@ const Users = db.define('users', {
         type: DataTypes.STRING
     },
     status: {
+        type: DataTypes.STRING
+    },
+    fb: {
+        type: DataTypes.STRING
+    },
+    twit: {
+        type: DataTypes.STRING
+    },
+    instagram: {
         type: DataTypes.STRING
     },
     foto: {

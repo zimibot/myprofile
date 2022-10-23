@@ -9,9 +9,9 @@ const SettingsLayout = ({ title, children, classContent = "", roles }) => {
             <title>{title}</title>
         </Head>
         <Navbar />
-        <div className="px-4 py-16 bg-black bg-opacity-50 backdrop-blur text-white flex">
+        <div className="px-4 py-16 bg-black bg-opacity-50 backdrop-blur  flex">
             <div className="container m-auto">
-                <h1 className="text-4xl font-bold">
+                <h1 className="text-4xl font-bold text-white">
                     {title}
                 </h1>
             </div>
@@ -19,7 +19,7 @@ const SettingsLayout = ({ title, children, classContent = "", roles }) => {
         <div className="w-full bg-slate-100 flex-1 p-4 flex flex-col">
             <div className={`container m-auto p-4 rounded flex-1 flex flex-col ${classContent} space-y-4`}>
                 <div className="flex items-center gap-4">
-                    <Breadcrumbs inactiveItemClassName=" bg-white p-2 text-sm " listClassName="flex gap-3" activeItemClassName="bg-green-500 text-white text-sm  p-2" transformLabel={(data) => {
+                    <Breadcrumbs  inactiveItemClassName=" bg-white p-2 text-sm " listClassName="flex gap-3" activeItemClassName="bg-green-500 text-white text-sm  p-2" transformLabel={(data) => {
                         return <div>{data}</div>
                     }} useDefaultStyle={false} rootLabel="Home" />
                 </div>

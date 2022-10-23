@@ -16,7 +16,7 @@ export default async function handler(req, res) {
             if (!data.username) res.status(500).send({ code: 500, message: "Username is required!" });
             if (!data.email) res.status(500).send({ code: 500, message: "email is required!" });
             if (!data.nim) res.status(500).send({ code: 500, message: "Nim is required!" });
-            if (`${data.nim}`.length < 6    ) res.status(500).send({ code: 500, message: "NIM Can't Be Less Than 6   Characters", path: "nim" });
+            if (`${data.nim}`.length < 9) res.status(500).send({ code: 500, message: "NIM Can't Be Less Than 9  Characters", path: "nim" });
             if (`${data.password}`.length < 4) res.status(500).send({ code: 500, message: "Password Can't Be Less Than 4 Characters", path: "password" });
             if (`${data.username}`.length < 4) res.status(500).send({ code: 500, message: "Username Can't Be Less Than 4 Characters", path: "username" });
             if (`${data.fullname}`.length < 4) res.status(500).send({ code: 500, message: "Fullname Can't Be Less Than 6 Characters", path: "fullname" });
@@ -27,16 +27,13 @@ export default async function handler(req, res) {
             data = {
                 ...data,
                 foto: "/default.jpg",
-                password: hash
+                password: hash,
             }
 
-            let settingsData = {
-                nim: data.nim,  
-            }
-
-            await Users.create(data);
-            await UsersSettings.create(settingsData);
-
+            let theUser = await Users.create(data, { raw: true }); // theUser is a user model instance
+            await UsersSettings.create({
+                nim: theUser.nim
+            });
 
             res.status(200).json({
                 result: {
@@ -51,12 +48,12 @@ export default async function handler(req, res) {
             res.status(405).send({ code: 405, message: 'Only POST requests allowed' })
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({
             code: 500,
             message: !error.errors ? error.message : {
                 ...error.errors.map(d => ({
                     ...d,
+                    path: "nim",
                     instance: null
                 }))
             }

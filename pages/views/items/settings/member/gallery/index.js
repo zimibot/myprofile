@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { gallery, verify } from "../../../../../../src/client_api/get";
-import { useState } from "react";
+import {  useState } from "react";
 
 const GalleryRoute = () => {
     const { register } = useForm()
@@ -14,10 +14,12 @@ const GalleryRoute = () => {
     const token = getCookie("token")
     const nimUser = verify()
     const [page, setpage] = useState(0);
-    const { data, mutate } = gallery({ nim: nimUser.data?.data.nim, page: page, limit: 8 })
+    const { data, mutate } = gallery({ nim: nimUser.data?.data.nim, page: page, limit: 9 })
     const pageNext = (d) => {
         setpage(d.selected)
     }
+  
+
     const uploads = async (d) => {
         try {
             if (d.target.files) {
@@ -66,9 +68,7 @@ const GalleryRoute = () => {
         </div>
         <div className="relative flex flex-col flex-1">
             {data ?
-                <>
-                    <Gallery name="user" mutate={mutate} animation={"scale-in"} itemGallery={data.results} totalPages={data.totalPages} page={pageNext} initialPage={page}></Gallery>
-                </>
+                <Gallery total={data.total} name="user" mutate={mutate} animation={"scale-in"} itemGallery={data.results} totalPages={data.totalPages} page={pageNext} initialPage={page}></Gallery>
                 : <div className="w-full p-4 text-center">Loading</div>
             }
         </div>

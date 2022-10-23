@@ -2,12 +2,13 @@ import { removeCookies } from 'cookies-next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { currentUser } from '../client_api/get';
+import { currentUser, verify } from '../client_api/get';
 
 export const Navbar = () => {
     const [isActive, setIsActive] = useState(false)
     const routes = useRouter()
     let user = currentUser({nim: routes.query.index})
+    const verif = verify()
     if (!user.data) {
         return ""
     }
@@ -21,7 +22,7 @@ export const Navbar = () => {
         window.location.href = "/views/items/login"
     }
     return (
-        <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 sticky top-0 z-20 dark:bg-gray-900 items-center text-gray-700  md:text-sm md:font-medium gap-4 flex justify-center">
+        <nav className="bg-white border-gray-200 shadow px-2 sm:px-4 py-2.5 sticky top-0 z-[9999] dark:bg-gray-900 items-center text-gray-700  md:text-sm md:font-medium gap-4 flex justify-center ">
             <div className="container flex items-center">
                 <div className=" flex-1 flex flex-wrap justify-between items-center mx-auto">
                     <a href="/" className="flex items-center">
@@ -35,7 +36,7 @@ export const Navbar = () => {
                     <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                         <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                             <li>
-                                <a href="/" className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">Home</a>
+                                <Link href={verif.data.isAuth ? verif.data.data.roles === 1 ? '/views/items/settings/admin/profile' : `/views/items/settings/member/profile/${verif.data.data.nim}` : '/views/items/login'} className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">Home</Link>
                             </li>
                             <li>
                                 <Link href="/views/items/settings/member/gallery" className="block py-2 pr-4 pl-3   bg-blue-700 rounded md:bg-transparent  md:p-0 dark:text-white">Gallery</Link>
@@ -53,12 +54,7 @@ export const Navbar = () => {
                             <div id="dropdownNavbar" className="top-[66px] absolute z-10 w-44 font-normal bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-400">
                                     <li>
-                                        <div href="#" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{name}</div>
-                                    </li>
-                                </ul>
-                                <ul className="py-1 text-sm text-gray-700 dark:text-gray-400">
-                                    <li>
-                                        <div href="#" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Kemampuan</div>
+                                        <div className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{name}</div>
                                     </li>
                                 </ul>
                                 <div className="py-1">

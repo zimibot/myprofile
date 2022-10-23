@@ -12,7 +12,20 @@ const fetcherAuth = async ({ url, headers, body, type }) => {
 
 export const verify = () => {
 
-    const { data, error } = useSWR("/api/get/session", fetcher, {
+    const { data, error } = useSWR("/api/get/global/session", fetcher, {
+        loadingTimeout: 1000
+    });
+
+    return {
+        data,
+        error
+    }
+
+}
+
+export const userInfo = () => {
+
+    const { data, error } = useSWR("/api/get/global/user_info", fetcher, {
         loadingTimeout: 1000
     });
 
@@ -26,7 +39,7 @@ export const verify = () => {
 export const dataUser = ({ next = 0, limit = 1, search = "", attribute }) => {
     let token = getCookie('token')
     const { data, error, mutate } = useSWR({
-        url: `/api/get/user?next=${next}&limit=${limit}&search=${search}&attribute=${attribute}`, headers: {
+        url: `/api/get/auth/user?next=${next}&limit=${limit}&search=${search}&attribute=${attribute}`, headers: {
             headers: {
                 'Authorization': token,
             }
@@ -45,8 +58,8 @@ export const dataUser = ({ next = 0, limit = 1, search = "", attribute }) => {
 export const currentUser = ({ nim }) => {
     let ver = verify()
     let token = getCookie('token')
-    const { data, error } = useSWR({
-        url: `/api/get/current_user?nim=${nim ? nim : ver?.data?.data?.nim}`,
+    const { data, error, mutate } = useSWR({
+        url: `/api/get/auth/current_user?nim=${nim ? nim : ver?.data?.data?.nim}`,
         headers: {
             headers: {
                 'Authorization': token,
@@ -59,7 +72,8 @@ export const currentUser = ({ nim }) => {
 
     return {
         data,
-        error
+        error,
+        mutate
     }
 }
 
@@ -67,7 +81,29 @@ export const gallery = ({ nim, limit, page }) => {
 
     let d = nim ? `nim=${nim}` : ""
 
-    const { data, error, mutate } = useSWR(`/api/get/gallery_view?limit=${limit}&page=${page}&${d}`, fetcher, {
+    const { data, error, mutate } = useSWR(`/api/get/global/gallery_view?limit=${limit}&page=${page}&${d}`, fetcher, {
+        loadingTimeout: 1000
+    });
+
+    return {
+        data,
+        error,
+        mutate
+    }
+
+}
+
+export const skills = ({ nim }) => {
+    let token = getCookie('token')
+
+
+    const { data, error, mutate } = useSWR({
+        url: `/api/get/auth/get_skills?nim=${nim}`, headers: {
+            headers: {
+                'Authorization': token,
+            }
+        }, type: "GET"
+    }, nim ? fetcherAuth : [], {
         loadingTimeout: 1000
     });
 

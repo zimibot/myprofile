@@ -7,10 +7,10 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/autoplay';
 import 'swiper/css/effect-cards';
 import 'swiper/css/effect-fade';
+import 'antd/dist/antd.css';
 import '../styles/globals.css'
 import 'react-medium-image-zoom/dist/styles.css'
 import 'react-circular-progressbar/dist/styles.css';
-
 import 'react-toastify/dist/ReactToastify.css';
 import { CookiesProvider } from 'react-cookie';
 import ProtectedRoute from '../src/protectRoutes';
@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }) {
       <ContextProvider>
         <ProtectedRoute>
           <div className="flex flex-col flex-1 overflow-auto">
-            <Component {...pageProps} />
+            <Component  {...pageProps} />
           </div>
         </ProtectedRoute>
         <ToastContainer position="top-center"></ToastContainer>

@@ -137,6 +137,7 @@ export const Rows = ({ rows, search = "", mutate, token }) => {
             </td>
         </tr>
     }
+
     rows = rows.data.results.rows
     return rows.map(d => {
         return (
@@ -174,7 +175,7 @@ export const Rows = ({ rows, search = "", mutate, token }) => {
                     <div className="flex gap-4">
                         <a href={`/views/items/settings/member/profile/${d.nim}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                         {nim !== d.nim &&
-                            <button onClick={() => OnDelete(d.nim, d.email, d.url)} className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                            <button onClick={() => OnDelete(d.nim, d.email, d.foto)} className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                         }
                     </div>
                 </td>

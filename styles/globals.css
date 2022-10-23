@@ -58,6 +58,10 @@ body>div {
   }
 }
 
+#__next {
+  position: relative;
+  z-index: 2;
+}
 .scale-in {
   animation: comeIn ease 0.5s;
   animation-iteration-count: 1;

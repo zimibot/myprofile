@@ -1,6 +1,4 @@
 import fs from "fs"
-import getConfig from "next/config";
-import path from "path";
 import serverPath from "../../../lib/pathUrl";
 import { authenticated } from "../../../middleware/authApi";
 import GalleryModel from "../../../models/gallery.model";
@@ -13,14 +11,15 @@ const GalleryDelt = async (req, res) => {
 
             let { url, id } = req.query
 
-             await GalleryModel.destroy({
+            await GalleryModel.destroy({
                 where: {
                     id
                 },
             })
 
-
-            await fs.unlinkSync(serverPath(`/public/${url}`));
+            if (fs.existsSync(serverPath(`/public/${url}`))) {
+                await fs.unlinkSync(serverPath(`/public/${url}`));
+            }
 
             res.status(200).json({ message: "Delete Success", img: url.split("/").pop() });
         } else {

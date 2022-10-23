@@ -7,12 +7,10 @@ const GalleryModel = db.define('users_gallery', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        unique: true,
-
+        primaryKey: true,
     },
     nim: {
         type: DataTypes.INTEGER(20),
-        primaryKey: true,
     },
     url: {
         type: DataTypes.STRING,
